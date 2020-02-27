@@ -4,12 +4,14 @@ using System.Linq;
 using API.Data;
 using API.HATEOAS;
 using API.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [Route("v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProdutosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
