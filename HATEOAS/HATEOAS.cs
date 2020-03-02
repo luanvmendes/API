@@ -4,8 +4,8 @@ namespace API.HATEOAS
 {
     public class HATEOAS
     {
-        public string url;
-        public string protocol = "https://";
+        private string url;
+        private string protocol = "https://";
         public List<Link> actions = new List<Link>();
 
         public HATEOAS (string url) {

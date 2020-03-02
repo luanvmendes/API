@@ -11,7 +11,7 @@ namespace API.Controllers
 {
     [Route("v1/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProdutosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +25,12 @@ namespace API.Controllers
             HATEOAS.AddAction("DELETE_PRODUCT", "DELETE");
             HATEOAS.AddAction("EDIT_PRODUCT", "PATCH");
         }
+
+        [HttpGet("teste")]
+        public IActionResult TesteClaims() {
+            return Ok(HttpContext.User.Claims.First(claim => claim.Type.ToString().Equals("id", StringComparison.InvariantCultureIgnoreCase)).Value);
+        }
+
 
         [HttpGet]
         public IActionResult PegarProduto() {
@@ -46,7 +52,7 @@ namespace API.Controllers
                 ProdutoContainer produtoHATEOAS = new ProdutoContainer();
                 produtoHATEOAS.produto = produto;
                 produtoHATEOAS.links = HATEOAS.GetActions(produto.Id.ToString());
-                return Ok(new {produtoHATEOAS.produto, produtoHATEOAS.links});               
+                return Ok(produtoHATEOAS);               
             } catch (Exception e) {
                 Response.StatusCode = 404;
 
@@ -134,8 +140,8 @@ namespace API.Controllers
     }
 public class ProdutoContainer
     {
-        public Produto produto;
-        public Link[] links;
+        public Produto produto { get; set; }
+        public Link[] links { get; set; }
     }
     }
 }

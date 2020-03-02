@@ -44,12 +44,14 @@ namespace API.Controllers
                         var claims = new List<Claim>();
                         claims.Add(new Claim("id", usuario.Id.ToString()));
                         claims.Add(new Claim("email", usuario.Email));
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
 
                         var JWT = new JwtSecurityToken(
                             issuer: "testeapirest",
                             expires: DateTime.Now.AddHours(1),
                             audience: "usuario_comum",
-                            signingCredentials: credenciaisDeAcesso
+                            signingCredentials: credenciaisDeAcesso,
+                            claims: claims
                         );
 
                         return Ok(new JwtSecurityTokenHandler().WriteToken(JWT));
